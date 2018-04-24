@@ -1,3 +1,6 @@
+//Vishal Madipadga
+//CS3377.501
+//vrm160030@utdallas.edu
 #ifndef _PROGRAM6_H
 #define _PROGRAM6_H
 #include <stdint.h>

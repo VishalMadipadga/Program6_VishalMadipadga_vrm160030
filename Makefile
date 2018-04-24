@@ -1,3 +1,6 @@
+#Vishal Madipadga
+#CS3377.501
+#vrm160030@utdallas.edu
 CXX = g++
 CXXFLAGS = 
 CPPFLAGS = -Wall -g -I/scratch/perkins/include

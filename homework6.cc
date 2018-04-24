@@ -1,3 +1,6 @@
+//Vishal Madipadga
+//CS3377.501
+//vrm160030@utdallas.edu
 #include "cdk.h"
 #include "program6.h"
 #define MATRIX_WIDTH 3
