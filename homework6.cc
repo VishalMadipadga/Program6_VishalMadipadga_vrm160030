@@ -1,8 +1,5 @@
-#include <iostream>
 #include "cdk.h"
 #include "program6.h"
-#include <fstream>
-#include <string>
 #define MATRIX_WIDTH 3
 #define MATRIX_HEIGHT 5
 #define BOX_WIDTH 20
@@ -13,6 +10,7 @@ using namespace std;
 
 int main()
 {
+  //creating objects to store contents of binary file into
   BinaryFileHeader *headers = new BinaryFileHeader;
   BinaryFileRecord *records = new BinaryFileRecord;
   ifstream binaryFile ("cs3377.bin", ios::in | ios::binary);
@@ -20,13 +18,9 @@ int main()
   CDKSCREEN     *cdkscreen;
   CDKMATRIX     *myMatrix;           // CDK Screen Matrix
 
-  // Remember that matrix starts out at 1,1.
   // Since arrays start out at 0, the first entries
   // below ("R0", and "C0") are just placeholders
   // 
-  // Finally... make sure your arrays have enough entries given the
-  // values you choose to set for MATRIX_WIDTH and MATRIX_HEIGHT
-  // above.
 
   const char            *rowTitles[] = {"R0", "a", "b", "c", "d", "e"};
   const char            *columnTitles[] = {"C0", "a", "b", "c", "d", "e"};
@@ -60,38 +54,48 @@ int main()
   /* Display the Matrix */
   drawCDKMatrix(myMatrix, true);
 
-  /*
-   * Dipslay a message
-   */
-  stringstream ss;
-  stringstream sss;
+  //stringstream objects to convert bin file contents to strings
+  stringstream versionStream;
+  stringstream recordStream;
+  stringstream magicStream;
+  //reading from the binary file header section
   binaryFile.read((char *) headers, sizeof(BinaryFileHeader));
 
-  int version = (int) headers->versionNumber;
-  ss << version << endl;
-  string version1 = ss.str();
+  //getting the magic number, converting it to hex and upper case
+  magicStream << uppercase << "0X" <<  hex << headers->magicNumber <<endl;
+  //converting magic number to string
+  string magic = magicStream.str();
 
-  int record = (int) headers->numRecords;
-  sss << record << endl;
-  string record1 = sss.str();
+  //getting version number and storing
+  versionStream << headers -> versionNumber << endl;
+  string version1 = versionStream.str();
 
- 
-  setCDKMatrixCell(myMatrix, 1, 1, "Magic: "   );
+  //getting number of records and storing
+  recordStream << headers->numRecords << endl;
+  string record1 = recordStream.str();
+
+ //displaying bin file headers in matrix
+  setCDKMatrixCell(myMatrix, 1, 1, ("Magic: " +magic).c_str()  );
   setCDKMatrixCell(myMatrix, 1, 2, ("Version: " +  version1).c_str() );
   setCDKMatrixCell(myMatrix, 1, 3, ("NumRecords: "+ record1).c_str() );
 
+  //reading from the bin file records section
   binaryFile.read((char *) records, sizeof(BinaryFileRecord));
 
+  //creating a stringstream
   stringstream length;
+  //converting str length from bin file to int
   int stringLength = (int) records -> strLength;
+  //sending length to be stored in string stream object
   length << stringLength << endl;
+  //converting it to string
   string stringLength1 = length.str();
 
+  //displaying records in bin file in the matrix
   setCDKMatrixCell(myMatrix, 2, 1, ("strlen: "+ stringLength1).c_str());
   setCDKMatrixCell(myMatrix, 2, 2,  records -> stringBuffer);
 
  binaryFile.read((char *) records, sizeof(BinaryFileRecord));
-
 
    stringstream length1;
    int stringLength2 = (int) records -> strLength;
@@ -104,7 +108,6 @@ int main()
 
    binaryFile.read((char *) records, sizeof(BinaryFileRecord));
 
-
   stringstream length2;
   int stringLength4 = (int) records -> strLength;
   length2 << stringLength4 << endl;
@@ -112,8 +115,6 @@ int main()
 
   setCDKMatrixCell(myMatrix, 4, 1, ("strlen: "+ stringLength5).c_str());
   setCDKMatrixCell(myMatrix, 4, 2, records -> stringBuffer);
-
-
 
 
  binaryFile.read((char *) records, sizeof(BinaryFileRecord));

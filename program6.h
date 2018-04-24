@@ -3,6 +3,11 @@
 #include <stdint.h>
 #include <string>
 #include <sstream>
+#include <iomanip>
+#include <iostream>
+#include <fstream>
+
+//header record in bin file described by BinaryFileHeader class
 class BinaryFileHeader
 {
 public:
@@ -15,8 +20,10 @@ public:
 
 };
 
+//size of fixed length buffer
 const int maxRecordStringLength = 25;
 
+//data record in bin file described by BinaryFileRecord class
 class BinaryFileRecord
 {
  public:
@@ -28,13 +35,5 @@ class BinaryFileRecord
 
 
 };
-
-
-
-
-
-
-
-
 
 #endif
