@@ -65,7 +65,7 @@ int main()
   binaryFile.read((char *) headers, sizeof(BinaryFileHeader));
 
   //getting the magic number, converting it to hex and upper case
-  magicStream << uppercase << "0X" <<  hex << headers->magicNumber <<endl;
+  magicStream<< uppercase << "0X" <<  hex << headers->magicNumber <<endl;
   //converting magic number to string
   string magic = magicStream.str();
 
@@ -78,58 +78,33 @@ int main()
   string record1 = recordStream.str();
 
  //displaying bin file headers in matrix
-  setCDKMatrixCell(myMatrix, 1, 1, ("Magic: " +magic).c_str()  );
+  setCDKMatrixCell(myMatrix, 1, 1, ("Magic: "+magic ).c_str()  );
   setCDKMatrixCell(myMatrix, 1, 2, ("Version: " +  version1).c_str() );
   setCDKMatrixCell(myMatrix, 1, 3, ("NumRecords: "+ record1).c_str() );
 
   //reading from the bin file records section
-  binaryFile.read((char *) records, sizeof(BinaryFileRecord));
 
-  //creating a stringstream
-  stringstream length;
-  //converting str length from bin file to int
-  int stringLength = (int) records -> strLength;
-  //sending length to be stored in string stream object
-  length << stringLength << endl;
-  //converting it to string
-  string stringLength1 = length.str();
-
-  //displaying records in bin file in the matrix
-  setCDKMatrixCell(myMatrix, 2, 1, ("strlen: "+ stringLength1).c_str());
-  setCDKMatrixCell(myMatrix, 2, 2,  records -> stringBuffer);
-
- binaryFile.read((char *) records, sizeof(BinaryFileRecord));
-
-   stringstream length1;
-   int stringLength2 = (int) records -> strLength;
-   length1 << stringLength2 << endl;
-   string stringLength3 = length1.str();
-
-  setCDKMatrixCell(myMatrix, 3, 1, ("strlen: "+ stringLength3).c_str());
-  setCDKMatrixCell(myMatrix, 3, 2, records -> stringBuffer);
-
-
-   binaryFile.read((char *) records, sizeof(BinaryFileRecord));
-
-  stringstream length2;
-  int stringLength4 = (int) records -> strLength;
-  length2 << stringLength4 << endl;
-  string stringLength5 = length2.str();
-
-  setCDKMatrixCell(myMatrix, 4, 1, ("strlen: "+ stringLength5).c_str());
-  setCDKMatrixCell(myMatrix, 4, 2, records -> stringBuffer);
-
-
- binaryFile.read((char *) records, sizeof(BinaryFileRecord));
-
-
-   stringstream length3;
-   int stringLength6 = (int) records -> strLength;
-   length3 << stringLength6 << endl;
-   string stringLength7 = length3.str();
-
-   setCDKMatrixCell(myMatrix, 5, 1, ("strlen: "+ stringLength7).c_str());
-   setCDKMatrixCell(myMatrix, 5, 2, records -> stringBuffer);
+  //i will be used to represent the row number of the matrix
+  int i =2;
+  //while the bin file is still reading valid data
+   while( binaryFile.read((char *) records, sizeof(BinaryFileRecord))!= NULL)
+   {
+     //declaring a string stream object
+     stringstream length;
+     //casting strLength from the bin file to an int
+     int stringLength = (int) records -> strLength;
+     //passing strLength to the string stream
+     length << stringLength << endl;
+     string finalLength = length.str();
+     //printing the strLength into the first column and string buffer into second column
+     setCDKMatrixCell(myMatrix, i, 1, ("strlen: "+ finalLength).c_str());
+     setCDKMatrixCell(myMatrix, i, 2, records -> stringBuffer);
+     //incrementing i to point to point to the next row
+     i++;
+     //clearing string stream to be used again
+     length.str(string());
+     length.clear();
+   }
 
   drawCDKMatrix(myMatrix, true);    /* required  */
 
