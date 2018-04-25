@@ -65,7 +65,7 @@ int main()
   binaryFile.read((char *) headers, sizeof(BinaryFileHeader));
 
   //getting the magic number, converting it to hex and upper case
-  magicStream<< uppercase << "0X" <<  hex << headers->magicNumber <<endl;
+  magicStream<< uppercase << "0x" <<  hex << headers->magicNumber <<endl;
   //converting magic number to string
   string magic = magicStream.str();
 
